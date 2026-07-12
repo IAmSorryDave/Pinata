@@ -1,0 +1,57 @@
+name: Run Bats Tests
+
+on:
+  pull_request:
+    branches: security-review
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install Bats
+        shell: bash
+        run: |
+          /scripts/setup/init.bash
+
+      - name: Install Bats helpers
+        run: |
+          mkdir -p tests/test_helper
+          git clone https://github.com/bats-core/bats-support.git tests/utilities/bats-support
+          git clone https://github.com/bats-core/bats-assert.git tests/utilities/bats-assert
+
+      - name: Run Bats tests
+        id: test-run
+        run: |
+          cd bats-tests
+          bats *.bats --tap | tee test-output.tap
+          
+      - name: Parse test results
+        if: always()
+        run: |
+          cd bats-tests
+          if [ -f test-output.tap ]; then
+            grep -E "^(ok|not ok)" test-output.tap | wc -l
+          fi
+
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let output = '## Bats Test Results\n\n';
+            if (fs.existsSync('bats-tests/test-output.tap')) {
+              output += '```\n' + fs.readFileSync('bats-tests/test-output.tap', 'utf8') + '\n```';
+            }
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            });
+
+      - name: Fail if tests failed
+        if: failure()
+        run: exit 1
