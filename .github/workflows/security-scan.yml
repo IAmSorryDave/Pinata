@@ -20,8 +20,9 @@ jobs:
         uses: docker/setup-docker-action@v5
 
       - name: Load .env file
-        run: |
-          set -o allexport; source .env; set +o allexport
+        uses: dotenv-action/dotenv@v1
+        with:
+          env_file: .env
 
       - name: Build Docker image
         shell: bash
@@ -33,7 +34,7 @@ jobs:
         with:
           scan-type: 'image'
           image-ref: $DOCKER_IMAGE_TAG
-          trivy-config: trivy.yaml
+          trivy-config: ${GITHUB_WORKSPACE}/trivy.yaml
         
 
       
