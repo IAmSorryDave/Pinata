@@ -30,37 +30,3 @@ When you create a PR to `main`:
 4. **Address vulnerabilities** before merging to `main`
 
 GitHub will block merges if critical vulnerabilities exist (if branch protection is enforced).
-
-1. Enable Code Scanning
-
-Code scanning automatically processes security vulnerability reports from Trivy.
-
-Go to Settings → Code security and analysis
- - Enable Code scanning (GitHub offers this at no extra cost)
- - Confirm Dependency graph is enabled
- - Status: You'll see "Code scanning alerts" section appear
-
-2. Configure GitHub Actions Permissions
-
-Your workflows need permission to write security events to GitHub.
-
-- Go to Settings → Actions → General
-- Under Workflow permissions, select:
-   ✅ Read and write permissions (allows workflows to write security events)
-   ✅ Allow GitHub Actions to create and approve pull requests
-- Save
-  
-3. Set Up Branch Protection Rules
-
-Enforce automated testing and security checks before merging.
-
-For security-review branch:
-
-- Go to Settings → Branches
-- Click Add rule
-- Set Branch name pattern to: security-review
-  Enable:
-     ✅ Require status checks to pass before merging
-     ✅ Require branches to be up to date before merging
-     Under Status checks that are required, add: security-scan (Trivy vulnerability scan)
-- Save
