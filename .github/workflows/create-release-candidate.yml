@@ -1,0 +1,67 @@
+name: Create Release Candidate
+
+on:
+  pull_request:
+    branches: security-review
+    types: [closed]
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  create-release-candidate:
+    if: |
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.base.ref == 'container-development' &&
+      github.event.pull_request.head.ref == 'security-review'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Configure Git
+        run: |
+          git config user.name "BatBox Bot"
+          git config user.email "bot@batbox.local"
+
+      - name: Determine next RC version
+        id: rc-version
+        run: |
+          # Get the current version from the latest tag or default to 0.1.0
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.1.0")
+          VERSION=${LATEST_TAG#v}
+          
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "Current version: $VERSION"
+          
+          # Find all existing release-candidate branches for this version
+          EXISTING_RCS=$(git branch -r | grep -oP "release-candidate-v${VERSION}rc\K[0-9]+" | sort -n | tail -1)
+          
+          if [ -z "$EXISTING_RCS" ]; then
+            RC_NUM=1
+          else
+            RC_NUM=$((EXISTING_RCS + 1))
+          fi
+          
+          RC_BRANCH="release-candidate-v${VERSION}rc${RC_NUM}"
+          echo "RC_BRANCH=$RC_BRANCH" >> $GITHUB_OUTPUT
+          echo "Next release candidate: $RC_BRANCH"
+
+      - name: Create and push RC branch
+        env:
+          RC_BRANCH: ${{ steps.rc-version.outputs.RC_BRANCH }}
+        run: |
+          # Create RC branch from latest security-review
+          git fetch origin security-review
+          git checkout -B "$RC_BRANCH" origin/security-review
+          git push origin "$RC_BRANCH"
+          
+          echo "Created branch: $RC_BRANCH"
+
+      - name: Create annotated tag
+        env:
+          RC_BRANCH: ${{ steps.rc-version.outputs.RC_BRANCH }}
+        run: |
+          git tag -a "$RC_BRANCH" -m "Release Candidate: $RC_BRANCH" HEAD
+          git push origin "$RC_BRANCH"
