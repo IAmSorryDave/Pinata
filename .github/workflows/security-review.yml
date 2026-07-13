@@ -1,0 +1,46 @@
+name: Security Scan with Trivy
+
+on:
+  pull_request:
+    branches: main
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  build-and-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v5
+
+      - name: Load .env file
+        uses: falti/dotenv-action@v1.2.1
+        with:
+          path: .env
+
+      - name: Build Docker image
+        shell: bash
+        run: |
+          docker build -t $DOCKER_IMAGE_TAG image
+
+      - name: Run Trivy scanner without downloading DBs
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: 'image'
+          image-ref: $DOCKER_IMAGE_TAG
+          trivy-config: trivy.yaml
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v4
+        if: always()
+        with:
+          sarif_file: trivy-results.sarif
+        
+
+      
