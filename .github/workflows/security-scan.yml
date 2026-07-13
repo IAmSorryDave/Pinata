@@ -1,0 +1,39 @@
+name: Security Scan with Trivy
+
+on:
+  pull_request:
+    branches: main
+
+permissions:
+  contents: read
+  security-events: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  build-and-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v5
+
+      - name: Load .env file
+        run: |
+          set -o allexport; source .env; set +o allexport
+
+      - name: Build Docker image
+        shell: bash
+        run: |
+          docker build -t $DOCKER_IMAGE_TAG ${GITHUB_WORKSPACE}/image
+
+      - name: Run Trivy scanner without downloading DBs
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: 'image'
+          image-ref: $DOCKER_IMAGE_TAG
+          trivy-config: trivy.yaml
+        
+
+      
