@@ -35,6 +35,14 @@ jobs:
           scan-type: 'image'
           image-ref: $DOCKER_IMAGE_TAG
           trivy-config: ${GITHUB_WORKSPACE}/trivy.yaml
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v4
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
         
 
       
