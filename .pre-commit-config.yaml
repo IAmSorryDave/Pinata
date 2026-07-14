@@ -1,11 +1,22 @@
+repos:
 
 - repo: local
-    hooks:
-      - id: write-version
-        name: Increment Container Version.
-        entry: python .python/hooks/write_version.py
-        fail_fast: true
-        language: python
-        additional_dependencies:
-          - jinja2
-        stages: [pre-commit]
+  hooks:
+    - id: testing
+      name: Run Testing Suite.
+      entry: main.bash
+      language: unsupported_script
+      fail_fast: true
+      stages: [pre-commit]
+
+- repo: local
+  hooks:
+    - id: version
+      name: Increment Container Version.
+      entry: python .python/hooks/write_version.py
+      fail_fast: true
+      language: python
+      files: ^bats/tests/
+      additional_dependencies:
+        - jinja2
+      stages: [pre-commit]

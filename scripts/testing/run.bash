@@ -1,3 +1,3 @@
 #!/usr/bin/bash
 
-bats tests
+bats bats/tests
