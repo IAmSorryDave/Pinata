@@ -12,6 +12,23 @@ permissions:
   contents: write
 
 jobs:
+
+  initialize-image-tag:
+    name: Add Repository Name to VERSION file.
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v7
+
+      - name: Write Repository Name to VERSION file
+        run: |
+          basename $(git remote get-url origin) > VERSION
+
+          
+
+    
+  
   initialize-branches:
     name: Create Development Branches
     runs-on: ubuntu-latest
