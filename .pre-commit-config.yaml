@@ -13,7 +13,7 @@ repos:
   hooks:
     - id: version
       name: Increment Container Version.
-      entry: python .hooks/main.py
+      entry: python .python/main.py
       fail_fast: true
       language: python
       files: ^bats/tests/
