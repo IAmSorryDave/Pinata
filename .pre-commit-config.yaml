@@ -13,10 +13,11 @@ repos:
   hooks:
     - id: version
       name: Increment Container Version.
-      entry: python .python/hooks/write_version.py
+      entry: python .hooks/main.py
       fail_fast: true
       language: python
       files: ^bats/tests/
       additional_dependencies:
         - jinja2
-      stages: [pre-commit]
+        - semver
+      stages: [manual]
