@@ -1,36 +1,12 @@
 
 
 # from argparse import ArgumentParser
-# from semver import Version
+
 
 
 # import os
 # from typing import Union
-from semver.version import Version
 from pathlib import Path
-
-
-
-def version_file_exists_in_project_root(version_filename: str = 'VERSION') -> bool:
-    abs_path = Path(version_filename).resolve()
-    return abs_path.exists()
-
-
-
-
-
-
-def get_version(path: Union[str, os.PathLike]) -> semver.Version:
-    """
-    Construct a Version object from a file
-
-    :param path: A text file only containing the semantic version
-    :return: A :class:`Version` object containing the semantic
-             version from the file.
-    """
-    version = open(path,"r").read().strip()
-    return Version.parse(version)
-
 
 # parser, semver = ArgumentParser(), Version()
 
