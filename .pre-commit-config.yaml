@@ -18,6 +18,5 @@ repos:
       language: python
       files: ^bats/tests/
       additional_dependencies:
-        - jinja2
         - semver
       stages: [manual]
