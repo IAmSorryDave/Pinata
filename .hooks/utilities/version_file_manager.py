@@ -19,7 +19,7 @@ class VersionFileManager(Version):
   def version_filepath(self) -> Path:
     if self.alternate_directory_path:
       path = self.alternate_directory_path / Path(self.version_filename)
-    else
+    else:
       path = Path(self.version_filename)
     return path
 
