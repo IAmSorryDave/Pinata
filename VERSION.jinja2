@@ -1,9 +1,0 @@
-{# version_info.jinja2 #}
-{
-    "version": "{{ version }}",
-    "major": {{ major }},
-    "minor": {{ minor }},
-    "patch": {{ patch }}{% if prerelease %},
-    "prerelease": "{{ prerelease }}"{% endif %}{% if build %},
-    "build": "{{ build }}"{% endif %}
-}
