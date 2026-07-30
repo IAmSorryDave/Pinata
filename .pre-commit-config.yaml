@@ -19,3 +19,4 @@ repos:
       additional_dependencies:
         - semver
       stages: [manual]
+      args: [--project-root, "."]
