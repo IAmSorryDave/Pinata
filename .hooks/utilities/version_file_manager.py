@@ -21,10 +21,12 @@ class VersionFileManager(Version):
   def __post_init__(self):
     if not self.filepath_exists:
       self.write_version_file(semantic_version_label=self.semantic_version_starting_label)
+      version = super().__class__.parse(self.semantic_version_starting_label)
     else:
       semantic_version_label = open(self.version_filepath,"r").read().strip()
+      version = super().__class__.parse(semantic_version_starting_label)
 
-    super().__init__(self.semantic_version_starting_label, *self.args, **self.kwargs)
+    super().__init__(major=version.major, minor=version.minor, patch=version.patch, prerelease=version.prerelease, build=version.build, *self.args, **self.kwargs)
 
   @property
   def filepath_exists(self):
