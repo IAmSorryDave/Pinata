@@ -1,41 +1,29 @@
 
-
 from argparse import ArgumentParser
+from pathlib import Path
 from utilities import VersionFileManager
 
-parser, semver = ArgumentParser(), VersionFileManager.parse()
-
-parser.add_argument("--major", action="store_true", help="Increment Semver by Major.")
-
-parser.add_argument("--minor", action="store_true", help="Increment Semver by Minor.")
-
-parser.add_argument("--patch", action="store_true", help="Increment Semver by Patch.")
-
-parser.add_argument("--pre", action="store_true", help="Increment Semver by Pre-release.")
-
-parser.add_argument("--build", action="store_true", help="Increment Semver by Build.")
+parser = ArgumentParser()
+parser.add_argument("--project-root", type=Path, default=Path("."))
+parser.add_argument("--major", action="store_true")
+parser.add_argument("--minor", action="store_true")
+parser.add_argument("--patch", action="store_true")
+parser.add_argument("--pre", action="store_true")
+parser.add_argument("--build", action="store_true")
 
 if __name__ == '__main__':
-
-    args = parser.parse_args()
-
+    args, unknown = parser.parse_known_args()
+    project_root = args.project_root.resolve()
+    
+    semver = VersionFileManager.parse(project_root=project_root)
+    
     if args.patch:
-
-        semver.bump_patch()
-
+        semver.increment_patch()
     if args.minor:
-
-        semver.bump_minor()
-
+        semver.increment_minor()
     if args.major:
-
-        semver.bump_major()
-
+        semver.increment_major()
     if args.pre:
-
-        semver.bump_prerelease()
-
+        semver.increment_prerelease()
     if args.build:
-
-        semver.bump_build()
-
+        semver.increment_build()
