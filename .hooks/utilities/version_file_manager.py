@@ -3,7 +3,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from semver.version import Version
 
-@dataclass(init=True)
 class VersionFileManager(Version):
 
   """
@@ -14,19 +13,32 @@ class VersionFileManager(Version):
   semantic_version_starting_label: str = "0.0.0"
   version_filename_encoding: str = "utf-8"
   version_filename: str = "VERSION"
-  
-  args: tuple = tuple()
-  kwargs: dict = field(default_factory=dict)
 
-  def __post_init__(self):
-    if not self.filepath_exists:
-      self.write_version_file(semantic_version_label=self.semantic_version_starting_label)
-      version = super().__class__.parse(self.semantic_version_starting_label)
+
+  # def __init__(self, *args, **kwargs):
+  #   if not self.filepath_exists:
+  #     self.write_version_file(semantic_version_label=self.semantic_version_starting_label)
+  #     version = super().parse(self.semantic_version_starting_label)
+  #   else:
+  #     semantic_version_label = open(self.version_filepath,"r").read().strip()
+  #     version = super().parse(semantic_version_label)
+
+    # super().__init__(version.major, version.minor, version.patch, version.prerelease, version.build, *args, **kwargs)
+
+  @classmethod
+  def parse(cls):
+
+    dummy_instance = super().parse(cls.semantic_version_starting_label)
+
+    if not dummy_instance.filepath_exists:
+      self.write_version_file(semantic_version_label=dummy_instance.semantic_version_starting_label)
+      version = super().parse(dummy_instance.semantic_version_starting_label)
     else:
-      semantic_version_label = open(self.version_filepath,"r").read().strip()
-      version = super().__class__.parse(semantic_version_starting_label)
+      version = super().parse(dummy_instance.read_version_file)
 
-    super().__init__(major=version.major, minor=version.minor, patch=version.patch, prerelease=version.prerelease, build=version.build, *self.args, **self.kwargs)
+    return version
+
+
 
   @property
   def filepath_exists(self):
@@ -68,6 +80,10 @@ class VersionFileManager(Version):
   def bump_build(self) -> None:
     super().bump_build()
     self.update_version_file
+
+  @property
+  def read_version_file(self) -> str:
+    return open(self.version_filepath,"r").read().strip()
     
   def write_version_file(self, semantic_version_label: str) -> None:
     with self.version_filepath.open("w", encoding=self.version_filename_encoding) as f:

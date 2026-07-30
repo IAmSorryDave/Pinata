@@ -3,7 +3,7 @@
 from argparse import ArgumentParser
 from utilities import VersionFileManager
 
-parser, semver = ArgumentParser(), VersionFileManager()
+parser, semver = ArgumentParser(), VersionFileManager.parse()
 
 parser.add_argument("--major", action="store_true", help="Increment Semver by Major.")
 
