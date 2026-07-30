@@ -9,18 +9,6 @@ repos:
       fail_fast: true
       stages: [pre-commit]
 
-# - repo: local
-#   hooks:
-#     - id: version
-#       name: Increment Container Version.
-#       entry: python .hooks/main.py
-#       fail_fast: true
-#       language: python
-#       files: ^bats/tests/
-#       additional_dependencies:
-#         - semver
-#       stages: [manual]
-
 - repo: local
   hooks:
     - id: version
