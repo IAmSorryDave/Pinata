@@ -1,7 +1,7 @@
 
 from argparse import ArgumentParser
 from pathlib import Path
-from utilities import VersionFileManager
+from utilities.version_file_manager import load_version, write_version_file
 
 parser = ArgumentParser()
 parser.add_argument("--project-root", type=Path, default=Path("."))
@@ -15,15 +15,17 @@ if __name__ == '__main__':
     args, unknown = parser.parse_known_args()
     project_root = args.project_root.resolve()
     
-    semver = VersionFileManager.parse(project_root=project_root)
+    version = load_version(project_root)
     
-    if args.patch:
-        semver.increment_patch()
-    if args.minor:
-        semver.increment_minor()
     if args.major:
-        semver.increment_major()
+        version = version.bump_major()
+    if args.minor:
+        version = version.bump_minor()
+    if args.patch:
+        version = version.bump_patch()
     if args.pre:
-        semver.increment_prerelease()
+        version = version.bump_prerelease()
     if args.build:
-        semver.increment_build()
+        version = version.bump_build()
+    
+    write_version_file(str(version), project_root)

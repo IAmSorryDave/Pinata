@@ -20,3 +20,4 @@ repos:
         - semver
       stages: [manual]
       args: [--project-root, "."]
+      pass_filenames: false
