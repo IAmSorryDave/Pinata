@@ -17,18 +17,23 @@ class VersionFileManager(Version):
     @classmethod
     def parse(cls, project_root: Path | None = None):
         """Parse version from VERSION file"""
-        dummy_instance = cls(0, 0, 0)  # Create temporary instance
+        dummy_instance = cls(0, 0, 0)
         if project_root:
             dummy_instance.alternate_directory_path = project_root
-
+        
         if not dummy_instance.filepath_exists:
             dummy_instance.write_version_file(dummy_instance.semantic_version_starting_label)
-            return super().parse(dummy_instance.semantic_version_starting_label)
-        else:
-            version_str = dummy_instance.read_version_file
-            instance = super().parse(version_str)
-            instance.alternate_directory_path = project_root
-            return instance
+            return dummy_instance
+        
+        version_str = dummy_instance.read_version_file
+        parsed = super().parse(version_str)
+        
+        # Create a VersionFileManager from the parsed Version
+        instance = cls(parsed.major, parsed.minor, parsed.patch, 
+                       parsed.prerelease, parsed.build)
+        instance.alternate_directory_path = project_root
+        return instance
+
 
     @property
     def version_filepath(self) -> Path:
