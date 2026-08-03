@@ -1,0 +1,49 @@
+
+on:
+  pull_request:
+    branches: test-development
+    types: [closed]
+
+jobs:
+  increment:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+    
+      - uses: actions/checkout@v7
+
+      - name: install-dependencies
+        shell: bash
+        run: |
+          pip install pre-commit
+          
+      - name: setup
+        shell: bash
+        run: | 
+          pre-commit install
+
+      - name: Increment Minor
+        shell: bash
+        run: |
+          chmod +x ${GITHUB_WORKSPACE}/scripts/versioning/increment-minor.bash 
+          ${GITHUB_WORKSPACE}/scripts/versioning/increment-minor.bash
+          chmod -x ${GITHUB_WORKSPACE}/scripts/versioning/increment-minor.bash
+
+      - name: teardown
+        shell: bash
+        run: | 
+          pre-commit uninstall
+
+      - name: Get Updated Version
+        id: version
+        shell: bash
+        run: |
+          VERSION=$(cat VERSION)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Commit & Push Version Change
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          branch: test-development
+          commit_message: "chore: bump development version to ${{ steps.version.outputs.version }}"
+          file_pattern: VERSION
