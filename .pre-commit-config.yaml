@@ -38,20 +38,7 @@ repos:
 
 - repo: local
   hooks:
-    - id: increment-version-by-minor
-      name: Increment Container Version.
-      entry: python .hooks/main.py --minor
-      fail_fast: true
-      language: python
-      additional_dependencies:
-        - semver
-      stages: [manual]
-      args: [--project-root, "."]
-      pass_filenames: false
-
-- repo: local
-  hooks:
-    - id: increment-version-by-minor
+    - id: increment-version-by-major
       name: Increment Container Version.
       entry: python .hooks/main.py --major
       fail_fast: true
@@ -64,7 +51,7 @@ repos:
 
 - repo: local
   hooks:
-    - id: increment-version-by-minor
+    - id: increment-version-by-prerelease
       name: Increment Container Version.
       entry: python .hooks/main.py --pre
       fail_fast: true
@@ -77,7 +64,7 @@ repos:
 
 - repo: local
   hooks:
-    - id: increment-version-by-minor
+    - id: increment-version-by-build
       name: Increment Container Version.
       entry: python .hooks/main.py --build
       fail_fast: true
