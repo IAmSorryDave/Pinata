@@ -7,7 +7,7 @@ repos:
       entry: main.bash
       language: unsupported_script
       fail_fast: true
-      stages: [pre-commit]
+      stages: [pre-commit, manual]
       pass_filenames: false
 
 - repo: local
