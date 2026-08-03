@@ -8,6 +8,7 @@ repos:
       language: unsupported_script
       fail_fast: true
       stages: [pre-commit]
+      pass_filenames: false
 
 - repo: local
   hooks:
@@ -53,6 +54,32 @@ repos:
     - id: increment-version-by-minor
       name: Increment Container Version.
       entry: python .hooks/main.py --major
+      fail_fast: true
+      language: python
+      additional_dependencies:
+        - semver
+      stages: [manual]
+      args: [--project-root, "."]
+      pass_filenames: false
+
+- repo: local
+  hooks:
+    - id: increment-version-by-minor
+      name: Increment Container Version.
+      entry: python .hooks/main.py --pre
+      fail_fast: true
+      language: python
+      additional_dependencies:
+        - semver
+      stages: [manual]
+      args: [--project-root, "."]
+      pass_filenames: false
+
+- repo: local
+  hooks:
+    - id: increment-version-by-minor
+      name: Increment Container Version.
+      entry: python .hooks/main.py --build
       fail_fast: true
       language: python
       additional_dependencies:
