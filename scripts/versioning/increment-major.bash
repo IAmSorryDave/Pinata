@@ -1,2 +1,2 @@
 #!/usr/bin/bash
-pre-commit run --hook-stage manual 
+pre-commit run --hook-stage manual increment-version-by-major --all-files
