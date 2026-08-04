@@ -50,3 +50,21 @@ jobs:
           branch: security-review
           commit_message: "chore: bump development version to ${{ steps.version.outputs.version }}"
           file_pattern: VERSION
+
+  checkpoint:
+    needs: increment
+    runs-on: ubuntu-latest
+    steps:
+    
+      - uses: actions/checkout@v7
+
+      - name: Load .env file
+        uses: falti/dotenv-action@v1.2.1
+        with:
+          path: .env
+
+      - name: Create Checkpoint Branch
+        uses: peterjgrainger/action-create-branch@v2.2.0
+        with:
+          branch: $DOCKER_IMAGE_TAG
+  
