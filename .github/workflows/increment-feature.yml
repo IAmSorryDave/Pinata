@@ -4,6 +4,9 @@ on:
     branches: test-development
     types: [closed]
 
+permissions:
+  contents: write
+
 jobs:
   increment:
     if: github.event.pull_request.merged == true
@@ -25,7 +28,7 @@ jobs:
       - name: Increment Minor
         shell: bash
         run: |
-          chmod +x ${GITHUB_WORKSPACE}/scripts/versioning/increment-minor.bash 
+          chmod +x ${GITHUB_WORKSPACE}/scripts/versioning/increment-minor.bash
           ${GITHUB_WORKSPACE}/scripts/versioning/increment-minor.bash
           chmod -x ${GITHUB_WORKSPACE}/scripts/versioning/increment-minor.bash
 
