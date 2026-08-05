@@ -25,12 +25,12 @@ jobs:
         run: | 
           pre-commit install
 
-      - name: Increment Minor
+      - name: Increment Prerelease
         shell: bash
         run: |
-          chmod +x ${GITHUB_WORKSPACE}/scripts/versioning/increment-minor.bash
+          chmod +x ${GITHUB_WORKSPACE}/scripts/versioning/increment-prerelease.bash
           ${GITHUB_WORKSPACE}/scripts/versioning/increment-prerelease.bash
-          chmod -x ${GITHUB_WORKSPACE}/scripts/versioning/increment-minor.bash
+          chmod -x ${GITHUB_WORKSPACE}/scripts/versioning/increment-prerelease.bash
 
       - name: teardown
         shell: bash
@@ -58,13 +58,19 @@ jobs:
     
       - uses: actions/checkout@v7
 
-      - name: Load .env file
-        uses: falti/dotenv-action@v1.2.1
-        with:
-          path: .env
-
+      - name: Store Image Tag as Branch Name
+        id: branch
+        shell: bash
+        run: | 
+          source .env
+          BRANCH=${DOCKER_IMAGE_TAG//':'/'-'}
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          
       - name: Create Checkpoint Branch
         uses: peterjgrainger/action-create-branch@v2.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: $DOCKER_IMAGE_TAG
+          branch: ${{ steps.branch.outputs.branch }}
+  
   
