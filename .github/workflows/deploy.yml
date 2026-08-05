@@ -24,33 +24,18 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Determine version from RC branch
-        id: version
+      - name: Read and Stash Image Tag
+        id: tag
+        shell: bash
         run: |
-          # Check if we were merged from a release-candidate branch
-          MERGE_COMMIT_MESSAGE=$(git log --format=%B -n1 HEAD | head -1)
-          
-          # Try to extract RC version from merge commit
-          if echo "$MERGE_COMMIT_MESSAGE" | grep -oP "release-candidate-v\K[0-9]+\.[0-9]+\.[0-9]+rc[0-9]+" > /tmp/rc_version.txt; then
-            VERSION=$(cat /tmp/rc_version.txt)
-            echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-            echo "Detected RC version from merge: $VERSION"
-          else
-            # Fallback: Generate from latest tag
-            LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.1.0")
-            VERSION=${LATEST_TAG#v}
-            MAJOR=$(echo $VERSION | cut -d. -f1)
-            MINOR=$(echo $VERSION | cut -d. -f2)
-            PATCH=$(echo $VERSION | cut -d. -f3 | cut -d'r' -f1)
-            NEW_PATCH=$((PATCH + 1))
-            VERSION="${MAJOR}.${MINOR}.${NEW_PATCH}"
-            echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-            echo "Generated new version: $VERSION"
-          fi
+          source .env
+          TAG=$DOCKER_IMAGE_TAG
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v7
         with:
-          context: .
+          context: ${GITHUB_WORKSPACE}/image
           push: true
+          tags: ${{ steps.tag.outputs.tag }}
 
