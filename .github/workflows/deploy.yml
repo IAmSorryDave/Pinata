@@ -1,7 +1,7 @@
 name: Build and Deploy to Docker Hub
 
 on:
-  push:
+  pull_request:
     branches: [main]
 
 permissions:
@@ -53,5 +53,4 @@ jobs:
         with:
           context: .
           push: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+
