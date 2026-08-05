@@ -25,12 +25,12 @@ jobs:
         run: | 
           pre-commit install
 
-      - name: Increment Minor
+      - name: Increment Build
         shell: bash
         run: |
-          chmod +x ${GITHUB_WORKSPACE}/scripts/versioning/increment-minor.bash
+          chmod +x ${GITHUB_WORKSPACE}/scripts/versioning/increment-build.bash
           ${GITHUB_WORKSPACE}/scripts/versioning/increment-build.bash
-          chmod -x ${GITHUB_WORKSPACE}/scripts/versioning/increment-minor.bash
+          chmod -x ${GITHUB_WORKSPACE}/scripts/versioning/increment-build.bash
 
       - name: teardown
         shell: bash
