@@ -28,7 +28,9 @@ jobs:
         id: tag
         shell: bash
         run: |
-          source .env
+          chmod +x ${GITHUB_WORKSPACE}/scripts/environment.bash
+          source ${GITHUB_WORKSPACE}/scripts/environment.bash
+          chmod -x ${GITHUB_WORKSPACE}/scripts/environment.bash
           TAG=$DOCKER_IMAGE_TAG
           echo "tag=$TAG" >> $GITHUB_OUTPUT
 
