@@ -6,7 +6,7 @@ source .env
 set +a
 
 # Option 1: Get PROJECT_NAME from git repository root directory name
-PROJECT_NAME=$(basename "$(git rev-parse --show-toplevel)")
+PROJECT_NAME=$(basename "$(git remote get-url origin)")
 
 # Option 2: Extract repository name from git remote origin URL
 # PROJECT_NAME=$(git remote get-url origin | xargs basename -s .git)
