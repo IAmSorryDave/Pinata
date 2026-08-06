@@ -28,9 +28,7 @@ jobs:
       - name: Increment Prerelease
         shell: bash
         run: |
-          chmod +x ${GITHUB_WORKSPACE}/scripts/versioning/increment-prerelease.bash
-          ${GITHUB_WORKSPACE}/scripts/versioning/increment-prerelease.bash
-          chmod -x ${GITHUB_WORKSPACE}/scripts/versioning/increment-prerelease.bash
+          source ${GITHUB_WORKSPACE}/scripts/versioning/increment-prerelease.bash
 
       - name: teardown
         shell: bash
@@ -62,9 +60,9 @@ jobs:
         id: branch
         shell: bash
         run: | 
-          chmod +x ${GITHUB_WORKSPACE}/scripts/environment/format.bash
-          source ${GITHUB_WORKSPACE}/scripts/environment/format.bash
-          chmod -x ${GITHUB_WORKSPACE}/scripts/environment/format.bash
+          # Determine DOCKER_IMAGE_TAG based on conditions
+          source ${GITHUB_WORKSPACE}/scripts/environment/init.bash
+          # Format for branch
           BRANCH=${DOCKER_IMAGE_TAG//':'/'-'}
           echo "branch=$BRANCH" >> $GITHUB_OUTPUT
           
