@@ -17,17 +17,13 @@ jobs:
       - name: Install Bats
         shell: bash
         run: |
-          chmod +x ${GITHUB_WORKSPACE}/scripts/setup/init.bash
-          ${GITHUB_WORKSPACE}/scripts/setup/init.bash
-          chmod -x ${GITHUB_WORKSPACE}/scripts/setup/init.bash
+          source ${GITHUB_WORKSPACE}/scripts/setup/init.bash
           
       - name: Run Bats tests
         id: test-run
         shell: bash
         run: |
-          chmod +x ${GITHUB_WORKSPACE}/main.bash
-          ${GITHUB_WORKSPACE}/main.bash
-          chmod -x ${GITHUB_WORKSPACE}/main.bash
+          source ${GITHUB_WORKSPACE}/main.bash
           
       - name: Fail if tests failed
         if: failure()
