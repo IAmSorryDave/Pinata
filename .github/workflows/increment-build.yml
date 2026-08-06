@@ -28,9 +28,7 @@ jobs:
       - name: Increment Build
         shell: bash
         run: |
-          chmod +x ${GITHUB_WORKSPACE}/scripts/versioning/increment-build.bash
-          ${GITHUB_WORKSPACE}/scripts/versioning/increment-build.bash
-          chmod -x ${GITHUB_WORKSPACE}/scripts/versioning/increment-build.bash
+          source ${GITHUB_WORKSPACE}/scripts/versioning/increment-build.bash
 
       - name: teardown
         shell: bash
