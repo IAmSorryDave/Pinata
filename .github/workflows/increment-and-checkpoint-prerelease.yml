@@ -62,7 +62,9 @@ jobs:
         id: branch
         shell: bash
         run: | 
-          source .env
+          chmod +x ${GITHUB_WORKSPACE}/scripts/environment.bash
+          source ${GITHUB_WORKSPACE}/scripts/environment.bash
+          chmod -x ${GITHUB_WORKSPACE}/scripts/environment.bash
           BRANCH=${DOCKER_IMAGE_TAG//':'/'-'}
           echo "branch=$BRANCH" >> $GITHUB_OUTPUT
           
