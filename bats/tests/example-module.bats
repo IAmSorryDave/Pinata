@@ -9,9 +9,9 @@ setup() {
     # This runs before each test
     load ../utilities/helpers
     
-    # Export environmental variables
+    # Initialize environmental variables
     # The DOCKER_IMAGE_TAG variable determines your image name.
-    source ${GITHUB_WORKSPACE}/scripts/enviroment/format.bash
+    source ${GITHUB_WORKSPACE}/scripts/enviroment/init.bash
     
     # Optional: Build image before running tests
     # Uncomment if you want tests to build the image automatically
