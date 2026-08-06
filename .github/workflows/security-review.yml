@@ -21,14 +21,7 @@ jobs:
         id: tag
         shell: bash
         run: |
-          source .env
-          if [[ -n "$ALTERNATE_REPO_NAME" ]] || [[ -n "$PORT" ]]; then
-              chmod +x ${GITHUB_WORKSPACE}/scripts/environment/format.bash
-              source ${GITHUB_WORKSPACE}/scripts/environment/format.bash
-              chmod -x ${GITHUB_WORKSPACE}/scripts/environment/format.bash
-          fi
-          TAG=$DOCKER_IMAGE_TAG
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          source ${GITHUB_WORKSPACE}/scripts/environment/init.bash
           TAG=$DOCKER_IMAGE_TAG
           echo "tag=$TAG" >> $GITHUB_OUTPUT
         
