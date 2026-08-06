@@ -8,4 +8,4 @@ else
   pre-commit run --hook-stage manual increment-version-by-minor --all-files
 fi 
 
-git add .
+git add VERSION
