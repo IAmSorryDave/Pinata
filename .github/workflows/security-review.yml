@@ -21,52 +21,6 @@ jobs:
         id: tag
         shell: bash
         run: |
-          name: Security Scan with Trivy
-
-on:
-  push:
-    branches: security-review
-
-permissions:
-  contents: read
-  security-events: write
-
-jobs:
-  build-and-scan:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: Set up Docker
-        uses: docker/setup-docker-action@v5
-
-      - name: Load Image Tag
-        id: tag
-        shell: bash
-        run: |
-          name: Security Scan with Trivy
-
-on:
-  push:
-    branches: security-review
-
-permissions:
-  contents: read
-  security-events: write
-
-jobs:
-  build-and-scan:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: Set up Docker
-        uses: docker/setup-docker-action@v5
-
-      - name: Load Image Tag
-        id: tag
-        shell: bash
-        run: |
           source .env
           TAG=$DOCKER_IMAGE_TAG
           echo "tag=$TAG" >> $GITHUB_OUTPUT
@@ -90,59 +44,6 @@ jobs:
         if: always()
         with:
           sarif_file: trivy-results.sarif
-        
-
-      
-          TAG=$DOCKER_IMAGE_TAG
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
-        
-      - name: Build Docker image
-        shell: bash
-        run: |
-          docker build -t ${{steps.tag.outputs.tag}} image
-
-      - name: Run Trivy scanner without downloading DBs
-        uses: aquasecurity/trivy-action@v0.36.0
-        with:
-          scan-type: 'image'
-          image-ref: ${{steps.tag.outputs.tag}}
-          trivy-config: trivy.yaml
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v4
-        if: always()
-        with:
-          sarif_file: trivy-results.sarif
-        
-
-      
-          TAG=$DOCKER_IMAGE_TAG
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
-        
-      - name: Build Docker image
-        shell: bash
-        run: |
-          docker build -t ${{steps.tag.outputs.tag}} image
-
-      - name: Run Trivy scanner without downloading DBs
-        uses: aquasecurity/trivy-action@v0.36.0
-        with:
-          scan-type: 'image'
-          image-ref: ${{steps.tag.outputs.tag}}
-          trivy-config: trivy.yaml
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v4
-        if: always()
-        with:
-          sarif_file: trivy-results.sarif
-        
-
-      
         
 
       
