@@ -11,7 +11,7 @@ setup() {
     
     # Export environmental variables
     # The DOCKER_IMAGE_TAG variable determines your image name.
-    source .env
+    source ${GITHUB_WORKSPACE}/scripts/enviroment/format.bash
     
     # Optional: Build image before running tests
     # Uncomment if you want tests to build the image automatically
