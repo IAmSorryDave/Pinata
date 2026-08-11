@@ -7,4 +7,4 @@ description: Use this prompt when weighing security considerations.
 
 The ```trivy.yml``` configuration defines what vulnerabilities the user will scan for before deploying the image to a registry.
 Where possible, avoid these kinds of vulnerabilities when implementing the Dockerfile.
-If a test defined feature creates a vulneratbilty by default, altert the user and recomend a solution.
+If a test defined feature creates a vulneratbilty by default, alert the user and recommend a solution.
