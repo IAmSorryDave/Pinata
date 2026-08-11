@@ -44,5 +44,5 @@ Additional tooling can be found at ```bats/utilities ```
 
 1. Name your new repository the same as your desired image name.
 2. Don’t clone the entire branch structure.
-3. Click repository.
+3. Click ``` Create Repository ``` .
  
