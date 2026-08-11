@@ -30,6 +30,6 @@ main branch → Auto-Deploy to DockerHub → → → → → → → → → →
 
 ### .env 🏕️
 
-# HOST="docker.io"  Change for private registry
-# PORT=5000 # Define Custom port.
-# ALTERNATE_REPO_NAME="Your Repo Name" # Define when your registry repository name differs from your GitHub user name.
+HOST="docker.io"  Change for private registry
+PORT=5000 # Define Custom port.
+ALTERNATE_REPO_NAME="Your Repo Name" # Define when your registry repository name differs from your GitHub user name.
