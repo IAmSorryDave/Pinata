@@ -25,6 +25,7 @@ main branch → Auto-Deploy to DockerHub → → → → → → → → → →
 ### Secrets 🤫
 
 ``` DOCKER_USERNAME ``` : Your Docker Hub username.
+
 ``` DOCKER_PASSCODE ``` : Your Docker Hub passcode. It’s strongly recommended you use a Docker Hub PAT in lieu of your actual password.
 
 
