@@ -34,7 +34,6 @@ Additional tooling can be found at ```bats/utilities ```
 ### Prerequisites
 
 - **Docker** (v20.10+)
-- **Docker Compose** (optional, for multi-container setups)
 - **Bash** (v4.0+)
 - **BATS** (included)
 
