@@ -1,27 +1,27 @@
 #!/usr/bin/env bats
 
 # Example Bats Tests for Test-Driven Container Development
-# 
+#
 # This file demonstrates common test patterns and best practices.
 # Adapt these examples for your own container.
 
 setup() {
-    # This runs before each test
-    load ../utilities/helpers
-    
-    # Initialize environmental variables
-    # The DOCKER_IMAGE_TAG variable determines your image name.
-    source ${GITHUB_WORKSPACE}/scripts/enviroment/init.bash
-    
-    # Optional: Build image before running tests
-    # Uncomment if you want tests to build the image automatically
-    build_image "$DOCKER_IMAGE_TAG"
+	# This runs before each test
+	load ../utilities/helpers
+
+	# Initialize environmental variables
+	# The DOCKER_IMAGE_TAG variable determines your image name.
+	source ${GITHUB_WORKSPACE}/scripts/enviroment/init.bash
+
+	# Optional: Build image before running tests
+	# Uncomment if you want tests to build the image automatically
+	build_image "$DOCKER_IMAGE_TAG"
 }
 
 teardown() {
-    # This runs after each test
-    # Optional: cleanup containers or resources
-    cleanup_containers "$DOCKER_IMAGE_TAG"
+	# This runs after each test
+	# Optional: cleanup containers or resources
+	cleanup_containers "$DOCKER_IMAGE_TAG"
 }
 
 # ============================================================================
