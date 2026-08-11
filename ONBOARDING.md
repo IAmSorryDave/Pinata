@@ -30,6 +30,6 @@ main branch → Auto-Deploy to DockerHub → → → → → → → → → →
 
 ### .env 🏕️
 
-HOST="docker.io"  Change for private registry.
+HOST="docker.io" Change for private registry.
 
-PORT=5000 # Define Custom port.
+PORT=5000 Define Custom port.
