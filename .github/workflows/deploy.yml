@@ -2,41 +2,98 @@ name: Build and Deploy to Docker Hub
 
 on:
   pull_request:
-    branches: [main]
-
-permissions:
-  contents: read
+    branches: main
+    types: closed
 
 jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
+  increment:
+  
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      
+    steps:
+    
+      - uses: actions/checkout@v7
+
+      - name: install-dependencies
+        shell: bash
+        run: |
+          pip install pre-commit
+          
+      - name: setup
+        shell: bash
+        run: | 
+          pre-commit install
+
+      - name: Increment Major
+        shell: bash
+        run: |
+          source ${GITHUB_WORKSPACE}/scripts/versioning/increment-major.bash
+
+      - name: teardown
+        shell: bash
+        run: | 
+          pre-commit uninstall
+
+      - name: Get Updated Version
+        id: version
+        shell: bash
+        run: |
+          VERSION=$(cat VERSION)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Commit & Push Version Change
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          branch: main
+          commit_message: "chore: bump development version to ${{ steps.version.outputs.version }}"
+          file_pattern: VERSION
+
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    needs: increment
+    runs-on: ubuntu-latest
+    env:
+      ALTERNATE_REPO_NAME: ${{ secrets.DOCKER_USERNAME }} # In case where GitHub and Dockerhub usernames differ.
+    permissions:
+      packages: write
+      contents: read
+      id-token: write
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v7
 
       - name: Log in to Docker Hub
-        uses: docker/login-action@v4
+        uses: docker/login-action@v4.6.0
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          password: ${{ secrets.DOCKER_PASSCODE }}
 
-      - name: Read and Stash Image Tag
+      - name: Load Image Tag
         id: tag
         shell: bash
         run: |
-          # Determine DOCKER_IMAGE_TAG based on conditions
-          source ${GITHUB_WORKSPACE}/scripts/environment/init.bash
-          TAG=$DOCKER_IMAGE_TAG
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
+           source ${GITHUB_WORKSPACE}/scripts/environment/init.bash
+           echo "tag=$DOCKER_IMAGE_TAG" >> "$GITHUB_OUTPUT"
+      
+      - name: Docker meta (use your tag as a raw tag)
+        id: meta
+        uses: docker/metadata-action@v6.2.0
+        with:
+          images: smolalpacaresearch/pinataalpha
+          tags: |
+            type=raw,value=${{ steps.tag.outputs.tag }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v7
+        id: push
+        uses: docker/build-push-action@v7.3.0
         with:
-          context: ${GITHUB_WORKSPACE}/image
+          context: ./image
+          file: ./image/Dockerfile
           push: true
-          tags: ${{ steps.tag.outputs.tag }}
-
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
