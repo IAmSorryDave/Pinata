@@ -1,6 +1,6 @@
 ### Recommended Development Path 🚗
 
-To take advantage of event driven versioning and security reviews, follow the recommended development path.
+To take advantage of event driven versioning, security reviews and deployments, follow the recommended development path.
 Be sure to create a Docker Hub Repository before merging into main. 
 
 
