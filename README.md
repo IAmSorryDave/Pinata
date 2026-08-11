@@ -37,4 +37,11 @@ Additional tooling can be found at ```bats/utilities ```
 - **Docker Compose** (optional, for multi-container setups)
 - **Bash** (v4.0+)
 - **BATS** (included)
-   
+
+### Get Started in 60 Seconds
+
+**Template the repository**
+
+1. Name your new repository the same as your desired image name.
+2. Don’t clone the entire branch structure.
+ 
