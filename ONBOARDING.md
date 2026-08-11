@@ -37,4 +37,5 @@ PORT=5000 Define Custom port.
 ### Security Review 🔒
 
 The ``` trivy.yml ``` configuration defines what vulnerabilities the will be scanned before deploying the image to a registry.
+
 Adjust to your requirements.
