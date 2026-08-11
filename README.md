@@ -17,7 +17,7 @@ Already contains instructions for CoPilot to implement your Dockerfile.
 ## 🧪 Testing…
 
 Define your tests at ```bats/tests ``` .
-Once you have done, you can kick off CoPilot.
+Once you have done so, you can kick off CoPilot.
 Additional tooling can be found at ```bats/utilities ```
 
 ### Key Features
