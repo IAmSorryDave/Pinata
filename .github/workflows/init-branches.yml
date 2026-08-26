@@ -58,6 +58,16 @@ jobs:
             echo "✓ Created and pushed 'security-review' branch"
           fi
 
+      - name: Create hotfix branch
+        run: |
+          if git rev-parse --verify origin/hotfix >/dev/null 2>&1; then
+            echo "✓ Branch 'hotfix' already exists"
+          else
+            git checkout -b hotfix
+            git push -u origin hotfix
+            echo "✓ Created and pushed 'hotfix' branch"
+          fi
+
       - name: Configure branch protection rules
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -94,6 +104,7 @@ jobs:
           echo "  • test-development (test specifications)"
           echo "  • container-development (Dockerfile development)"
           echo "  • security-review (vulnerability scanning & gate)"
+          echo "  • hotfix (emergency patching)"
           echo ""
           echo "Next steps:"
           echo "  1. Read ONBOARDING.md for the full workflow"
