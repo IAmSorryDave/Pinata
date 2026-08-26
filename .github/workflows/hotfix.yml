@@ -67,29 +67,19 @@ jobs:
         run: | 
           pre-commit uninstall
 
-      - name: Format UV Version
-        id: format
-        shell: bash
-        run: |
-          CURRENT_VERSION=$(cat VERSION)
-          MAJOR=${CURRENT_VERSION:0:1}
-          MINOR=$(find ./bats/tests -maxdepth 1 -mindepth 1 -type d | wc -l)
-          PATCH=${CURRENT_VERSION:4:1}
-          VERSION="${MAJOR}.${MINOR}.${PATCH}"
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-    
-      - name: Sync Semver
-        shell: bash
-        run: |
-          echo ${{ steps.format.outputs.version }}
-          echo ${{ steps.format.outputs.version }} > VERSION
-
       - name: Verify Version Changed
         run: git diff --exit-code VERSION || echo "Version updated successfully"
+
+      - name: Extract Version
+        id: version
+        shell: bash
+        run: |
+          VERSION=$( cat VERSION )
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Commit & Push Version Change
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: hotfix
-          commit_message: "chore: added patch; bump version to ${{ steps.format.outputs.version }}"
+          commit_message: "chore: added patch; update version to ${{ steps.version.outputs.version }}"
           file_pattern: VERSION
