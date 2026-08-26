@@ -73,7 +73,7 @@ jobs:
         run: |
           CURRENT_VERSION=$(cat VERSION)
           MAJOR=${CURRENT_VERSION:0:1}
-          MINOR=$(find ./tests -maxdepth 1 -mindepth 1 -type d | wc -l)
+          MINOR=$(find ./bats/tests -maxdepth 1 -mindepth 1 -type d | wc -l)
           PATCH=${CURRENT_VERSION:4:1}
           VERSION="${MAJOR}.${MINOR}.${PATCH}"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
