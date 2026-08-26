@@ -1,0 +1,95 @@
+name: Test Hotfix Branch 🧯
+
+on:
+  pull_request:
+    branches:
+      -  hotfix
+    types: opened
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    name: Validate Hotfix ✅
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+        with:
+          ref: hotfix
+
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v5
+
+      - name: Install Bats
+        shell: bash
+        run: |
+          source ${GITHUB_WORKSPACE}/scripts/setup/init.bash
+          
+      - name: Run Bats tests
+        id: test-run
+        shell: bash
+        run: |
+          source ${GITHUB_WORKSPACE}/main.bash
+          
+      - name: Fail if tests failed
+        if: failure()
+        run: exit 1
+
+  increment:
+    needs: test
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v7
+        with:
+          ref: hotfix
+
+      - name: install-dependencies
+        shell: bash
+        run: |
+          pip install pre-commit
+          
+      - name: setup
+        shell: bash
+        run: | 
+          pre-commit install
+
+      - name: Increment Minor
+        shell: bash
+        run: |
+          source ${GITHUB_WORKSPACE}/scripts/versioning/increment-patch.bash
+
+      - name: teardown
+        shell: bash
+        run: | 
+          pre-commit uninstall
+
+      - name: Format UV Version
+        id: format
+        shell: bash
+        run: |
+          CURRENT_VERSION=$(cat VERSION)
+          MAJOR=${CURRENT_VERSION:0:1}
+          MINOR=$(find ./tests -maxdepth 1 -mindepth 1 -type d | wc -l)
+          PATCH=${CURRENT_VERSION:4:1}
+          VERSION="${MAJOR}.${MINOR}.${PATCH}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+    
+      - name: Sync Semver
+        shell: bash
+        run: |
+          echo ${{ steps.format.outputs.version }}
+          uv version ${{ steps.format.outputs.version }}
+
+      - name: Verify Version Changed
+        run: git diff --exit-code pyproject.toml || echo "Version updated successfully"
+
+      - name: Commit & Push Version Change
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          branch: hotfix
+          commit_message: "chore: added patch; bump version to ${{ steps.format.outputs.version }}"
+          file_pattern: pyproject.toml
