@@ -39,12 +39,15 @@ jobs:
         run: | 
           pre-commit uninstall
 
-      - name: Get Updated Version
+      - name: Extract Version
         id: version
         shell: bash
         run: |
-          VERSION=$(cat VERSION)
+          VERSION=$( cat VERSION )
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Verify Version Changed
+        run: git diff --exit-code VERSION || echo "Version updated successfully"
 
       - name: Commit & Push Version Change
         uses: stefanzweifel/git-auto-commit-action@v7
@@ -70,7 +73,7 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v4.6.0
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: ${{ env.ALTERNATE_REPO_NAME }}
           password: ${{ secrets.DOCKER_PASSCODE }}
 
       - name: Load Image Tag
@@ -79,12 +82,16 @@ jobs:
         run: |
            source ${GITHUB_WORKSPACE}/scripts/environment/init.bash
            echo "tag=$DOCKER_IMAGE_TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Set Lowercase Repository Name
+        id: repo_name
+        run: echo "name=$(echo ${{ github.event.repository.name }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
       
       - name: Docker meta (use your tag as a raw tag)
         id: meta
         uses: docker/metadata-action@v6.2.0
         with:
-          images: smolalpacaresearch/pinataalpha
+          images: ${{ env.ALTERNATE_REPO_NAME }}/${{ steps.repo_name.outputs.name }}
           tags: |
             type=raw,value=${{ steps.tag.outputs.tag }}
 
