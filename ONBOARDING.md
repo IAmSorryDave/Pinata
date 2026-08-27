@@ -19,7 +19,15 @@ security review branch                                                          
 spawns release canidate branch, the nth release candidate.                                                            ↑
     ↓ (merge changes)                                                                                                 ↑
     ↓ (increment major)                                                                                               ↑
-main branch → Auto-Deploy to DockerHub → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → →  
+main branch → Auto-Deploy to DockerHub → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → →
+    ↑
+(merge changes)
+    ↑
+(increment minor)
+    ↑
+  hotfix
+    ↑
+nth patch branch
 ```
 
 ### Secrets 🤫
