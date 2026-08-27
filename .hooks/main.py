@@ -10,7 +10,7 @@ parser.add_argument("--minor", action="store_true")
 parser.add_argument("--patch", action="store_true")
 parser.add_argument("--pre", action="store_true")
 parser.add_argument("--build", action="store_true")
-parser.add_argiment("--reset_minor", action="store_true")
+parser.add_argument("--reset_minor", action="store_true")
 
 if __name__ == '__main__':
     args, unknown = parser.parse_known_args()
