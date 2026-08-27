@@ -3,7 +3,6 @@
 To take advantage of event driven versioning, security reviews and deployments, follow the recommended development path.
 Be sure to create a Docker Hub Repository before merging into main. 
 
-
 ```
 nth test set branch
     ↓ (merge new tests / fixtures)
@@ -23,9 +22,9 @@ main branch → Auto-Deploy to DockerHub → → → → → → → → → →
     ↑
 (merge changes)
     ↑
-(increment minor)
-    ↑
   hotfix
+    ↑
+(increment minor)
     ↑
 nth patch branch
 ```
