@@ -21,7 +21,7 @@ jobs:
         id: tag
         shell: bash
         run: |
-          source ${GITHUB_WORKSPACE}/scripts/environment/init.bash
+          source ${GITHUB_WORKSPACE}/.scripts/environment/init.bash
           echo "tag=$DOCKER_IMAGE_TAG" >> $GITHUB_OUTPUT
         
       - name: Build Docker image
