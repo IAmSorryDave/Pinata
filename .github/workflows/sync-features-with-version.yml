@@ -28,7 +28,7 @@ jobs:
       - name: Increment Minor
         shell: bash
         run: |
-          source ${GITHUB_WORKSPACE}/scripts/versioning/increment-minor.bash
+          source ${GITHUB_WORKSPACE}/scripts/versioning/sync-semver-minor.bash
 
       - name: teardown
         shell: bash
