@@ -24,38 +24,44 @@ jobs:
         shell: bash
         run: |
           CURRENT_VERSION=$(cat VERSION)
-          if [[ "$CURRENT_VERSION" == *pre* ]]; then
-            echo "prerelease=true" >> $GITHUB_OUTPUT
+          if [[ "$CURRENT_VERSION" == *rc* ]]; then
+            echo "rc=true" >> $GITHUB_OUTPUT
           else
-            echo "prerelease=false" >> $GITHUB_OUTPUT
+            echo "rc=false" >> $GITHUB_OUTPUT
           fi
 
       - name: install-dependencies
-        if: steps.check_version.outputs.prerelease == 'true'
+        if: steps.check_version.outputs.rc == 'true'
         shell: bash
         run: |
           pip install pre-commit
           
       - name: setup
-        if: steps.check_version.outputs.prerelease == 'true'
+        if: steps.check_version.outputs.rc == 'true'
         shell: bash
         run: | 
           pre-commit install
 
       - name: Increment Major
-        if: steps.check_version.outputs.prerelease == 'true'
+        if: steps.check_version.outputs.rc == 'true'
         shell: bash
         run: |
           source ${GITHUB_WORKSPACE}/.scripts/versioning/increment-major.bash
 
+      - name: Sync Minor
+        if: steps.check_version.outputs.rc == 'true'
+        shell: bash
+        run: |
+          source ${GITHUB_WORKSPACE}/.scripts/versioning/sync-semver-minor.bash
+
       - name: teardown
-        if: steps.check_version.outputs.prerelease == 'true'
+        if: steps.check_version.outputs.rc == 'true'
         shell: bash
         run: | 
           pre-commit uninstall
 
       - name: Extract Version
-        if: steps.check_version.outputs.prerelease == 'true'
+        if: steps.check_version.outputs.rc == 'true'
         id: version
         shell: bash
         run: |
@@ -63,12 +69,12 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Verify Version Changed
-        if: steps.check_version.outputs.prerelease == 'true'
+        if: steps.check_version.outputs.rc == 'true'
         run: git diff --exit-code VERSION || echo "Version updated successfully"
 
       - name: Commit & Push Version Change
         uses: stefanzweifel/git-auto-commit-action@v7
-        if: steps.check_version.outputs.prerelease == 'true'
+        if: steps.check_version.outputs.rc == 'true'
         with:
           branch: main
           commit_message: "chore: bump development version to ${{ steps.version.outputs.version }}"
