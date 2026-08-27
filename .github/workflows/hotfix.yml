@@ -25,7 +25,7 @@ jobs:
       - name: Install Bats
         shell: bash
         run: |
-          source ${GITHUB_WORKSPACE}/scripts/setup/init.bash
+          source ${GITHUB_WORKSPACE}/.scripts/setup/init.bash
           
       - name: Run Bats tests
         id: test-run
@@ -60,12 +60,12 @@ jobs:
       - name: Sync Minor
         shell: bash
         run: |
-          source ${GITHUB_WORKSPACE}/scripts/versioning/sync-semver-minor.bash
+          source ${GITHUB_WORKSPACE}/.scripts/versioning/sync-semver-minor.bash
 
       - name: Increment Minor
         shell: bash
         run: |
-          source ${GITHUB_WORKSPACE}/scripts/versioning/increment-patch.bash
+          source ${GITHUB_WORKSPACE}/.scripts/versioning/increment-patch.bash
 
       - name: teardown
         shell: bash
