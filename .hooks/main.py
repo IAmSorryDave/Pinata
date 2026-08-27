@@ -2,6 +2,7 @@
 from argparse import ArgumentParser
 from pathlib import Path
 from utilities.version_file_manager import load_version, write_version_file
+from utilities.write_documentation import update_documentation
 
 parser = ArgumentParser()
 parser.add_argument("--project-root", type=Path, default=Path("."))
@@ -11,6 +12,7 @@ parser.add_argument("--patch", action="store_true")
 parser.add_argument("--pre", action="store_true")
 parser.add_argument("--build", action="store_true")
 parser.add_argument("--reset_minor", action="store_true")
+parser.add_argument("--update_documentation", action="store_true")
 
 if __name__ == '__main__':
     args, unknown = parser.parse_known_args()
@@ -33,3 +35,8 @@ if __name__ == '__main__':
         version = version.bump_build()
     
     write_version_file(str(version), project_root)
+
+    if args.update_documentation:
+        update_documentation()
+
+    
