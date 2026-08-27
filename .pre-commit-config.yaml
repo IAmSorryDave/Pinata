@@ -50,6 +50,19 @@ repos:
 
 - repo: local
   hooks:
+    - id: reset-semver-minor
+      name: Set SemVer Minor to Zero
+      entry: python .hooks/main.py --reset_minor
+      fail_fast: true
+      language: python
+      additional_dependencies:
+        - semver
+      stages: [manual]
+      args: [--project-root, "."]
+      pass_filenames: false
+
+- repo: local
+  hooks:
     - id: increment-version-by-major
       name: Increment Container Version.
       entry: python .hooks/main.py --major
