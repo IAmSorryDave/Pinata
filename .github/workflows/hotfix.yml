@@ -57,6 +57,11 @@ jobs:
         run: | 
           pre-commit install
 
+      - name: Sync Minor
+        shell: bash
+        run: |
+          source ${GITHUB_WORKSPACE}/scripts/versioning/sync-semver-minor.bash
+
       - name: Increment Minor
         shell: bash
         run: |
