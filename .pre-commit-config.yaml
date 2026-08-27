@@ -14,6 +14,19 @@ repos:
 
 - repo: local
   hooks:
+    - id: update-documentation
+      name: Sync project documentation.
+      entry: python .hooks/main.py --update_documentation
+      fail_fast: true
+      language: python
+      additional_dependencies:
+        - jinja2
+        - semver
+      files: README.md.jinja
+      stages: [pre-commit]
+
+- repo: local
+  hooks:
     - id: testing
       name: Run Testing Suite.
       entry: main.bash
