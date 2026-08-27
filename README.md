@@ -12,7 +12,11 @@ Piñata makes it easy to practice TDD with Docker containers. Instead of manuall
 
 ``` .github/prompts/implement-features.promt.md ``` 
 
-Already contains instructions for CoPilot to implement your Dockerfile.
+Already contains instructions for CoPilot to implement your Dockerfile and …
+
+``` .github/prompts/documentation.promt.md ```
+
+contains instructions for CoPilot to update your README when features are implemented.
 
 ## 🧪 Testing…
 
