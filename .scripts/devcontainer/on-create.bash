@@ -1,3 +1,3 @@
-#!/usr/bin/bash
+#!/bin/bash
 
-source .scripts/setup/init.bash && sleep 3
+chmod +x .scripts/setup/init.bash && .scripts/setup/init.bash && chmod -x .scripts/setup/init.bash && sleep 3
