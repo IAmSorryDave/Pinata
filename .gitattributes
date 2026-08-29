@@ -1,0 +1,6 @@
+# Dockerfiles
+Dockerfile* text eol=lf
+dockerfile* text eol=lf
+
+# Shell scripts
+*.bash text eol=lf
