@@ -1,6 +1,6 @@
 # Semantic Versioning (SEMVER)
 
-This document defines the versioning scheme for your Piñata project.
+This document defines the versioning scheme for Piñata’s recommended development workflow and release process.
 
 ## Overview
 
