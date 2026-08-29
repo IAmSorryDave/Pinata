@@ -15,7 +15,7 @@ container development branch ← (push new feature) ← (write implementation wi
     ↓ (increment pre-release)                                                                                         ↑
 security review branch                                                                                                ↑
     ↓                                                                                                                 ↑
-spawns release canidate branch, the nth release candidate.                                                            ↑
+spawns release candidate branch, the nth release candidate.                                                            ↑
     ↓ (merge changes)                                                                                                 ↑
     ↓ (increment major)                                                                                               ↑
 main branch → Auto-Deploy to DockerHub → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → → →
@@ -28,6 +28,8 @@ main branch → Auto-Deploy to DockerHub → → → → → → → → → →
     ↑
 nth patch branch
 ```
+
+This should go without saying but DO NOT delete the test development, container development, security review, hotfix and main branches.
 
 ### Secrets 🤫
 
