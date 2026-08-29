@@ -5,6 +5,5 @@ dockerfile* text eol=lf
 # Shell scripts
 *.bash text eol=lf
 
-
-# Python (if you want to exclude or handle it differently)
-*.py text eol=lf
+# Exclude Python from language statistics
+*.py linguist-detectable=false
