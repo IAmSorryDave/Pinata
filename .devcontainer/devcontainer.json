@@ -1,5 +1,5 @@
 {
-  "onCreateCommand": "source .scripts/devcontainer/on-create.bash",
-  "postCreateCommand": "source .scripts/devcontainer/post-create.bash"
+  "onCreateCommand": "chmod +x .scripts/devcontainer/on-create.bash && .scripts/devcontainer/on-create.bash && chmod -x .scripts/devcontainer/on-create.bash",
+  "postCreateCommand": "chmod +x .scripts/devcontainer/post-create.bash && .scripts/devcontainer/post-create.bash && chmod -x .scripts/devcontainer/post-create.bash"
 }
 
