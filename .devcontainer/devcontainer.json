@@ -1,29 +1,5 @@
 {
   "onCreateCommand": "chmod +x .scripts/setup/init.bash && .scripts/setup/init.bash && chmod -x .scripts/setup/init.bash && sleep 3",
-  "postCreateCommand": "chmod +x .scripts/setup/precommit.bash && .scripts/setup/precommit.bash && chmod -x .scripts/setup/precommit.bash && sleep 3 && source .scripts/fallback/fetch-language-model.bash && sleep 3 && source .scripts/fallback/configure-copilot.bash && sleep 3",
-
-	"services": {
-    "llama-cpp": {
-      "image": "samueltallet/alpine-llama-cpp-server:latest",
-      "ports": ["8000:8000"],
-      "environment": {
-        "MODEL": "/models/model.gguf"
-      },
-      "volumes": [
-        "${containerEnv:HOME}/.cache/models:/models:ro"
-      ]
-    }
-  },
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-    "ghcr.io/devcontainers/features/github-cli:1": {}
-  },
-  "remoteEnv": {
-    "COPILOT_PROVIDER_BASE_URL": "http://llama-cpp:8000",
-    "COPILOT_OFFLINE": "true"
-  },
-
-  "forwardPorts": [8000]
-
+  "postCreateCommand": "chmod +x .scripts/setup/precommit.bash && .scripts/setup/precommit.bash && chmod -x .scripts/setup/precommit.bash && sleep 3"
 }
 
